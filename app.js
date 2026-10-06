@@ -12,3 +12,23 @@ const hooks=[['2.0 mm','B / 1','14'],['3.5 mm','E / 4','9'],['4.0 mm','G / 6','8
 let count=+localStorage.getItem('virka-count')||0;function counter(){count=Math.max(0,count);$('#count').textContent=count;localStorage.setItem('virka-count',count)}counter();$('#plus').onclick=()=>{count++;counter()};$('#minus').onclick=()=>{count--;counter()};$('#reset').onclick=()=>{count=0;counter()};$('#estimate').onclick=()=>{let base={Hat:150,Sweater:900,Blanket:1200}[$('#project').value],mul={Small:.8,Medium:1,Large:1.3}[$('#size').value];$('#estimateResult').textContent=`Estimated yarn: about ${Math.round(base*mul)} yards. Always check your pattern and gauge.`};
 $('#theme').onclick=()=>{document.body.classList.toggle('dark');localStorage.setItem('virka-theme',document.body.classList.contains('dark'))};if(localStorage.getItem('virka-theme')==='true')document.body.classList.add('dark');$('.menu').onclick=()=>$('#nav').classList.toggle('open');$('#searchBtn').onclick=()=>{$('#patterns').scrollIntoView();$('#patternSearch').value=$('#search').value;page=1;draw()};$('#support').onclick=()=>{openAuth('signup','Support is a demo contact flow. Create an account to continue.')};
 $('#profile').onclick=()=>{$('#modalContent').innerHTML=`<h2>Hello, ${user.name}</h2><p>Saved patterns are stored in this browser. Administrators can use this static upload mockup to prepare a new pattern entry.</p><form class="modal-form"><input placeholder="Pattern title"><input placeholder="Category"><input type="url" placeholder="External printable-PDF checkout link (optional)"><input type="file" accept="image/*,.pdf" multiple><button type="button" id="publish">Publish pattern</button></form>`;modal.showModal();$('#publish').onclick=()=>alert('Pattern prepared locally. Connect this form to your preferred CMS, storage service, or GitHub workflow to publish live files.')}
+
+// Sanity content is loaded after the CDN client is ready. Existing cards remain
+// visible if the dataset is private, empty, or uses different document types.
+window.addEventListener('virka-sanity-ready',async()=>{
+  try{
+    const [cmsPatterns,cmsCourses,cmsGuides]=await Promise.all([
+      window.virkaSanity.fetch(`*[_type in ["product","pattern"] && !(_id in path("drafts.**"))] | order(featured desc, _createdAt desc){"title":coalesce(title,name),"category":coalesce(category->title,category,"Patterns"),"difficulty":coalesce(difficulty,"Beginner"),"image":coalesce(mainImage.asset->url,image.asset->url,featuredImage.asset->url),"pdf":coalesce(pdf.asset->url,guidePdf.asset->url),"externalUrl":coalesce(externalUrl,checkoutUrl)}`),
+      window.virkaSanity.fetch(`*[_type == "course" && !(_id in path("drafts.**"))] | order(_createdAt desc){"title":coalesce(title,name),"summary":coalesce(summary,description,"Explore this crochet course.")}`),
+      window.virkaSanity.fetch(`*[_type == "guide" && !(_id in path("drafts.**"))] | order(_createdAt desc){"title":coalesce(title,name),"us":coalesce(usCode,usAbbreviation,"—"),"uk":coalesce(ukCode,ukAbbreviation,"—")}`)
+    ]);
+    if(cmsPatterns.length){
+      const mapped=cmsPatterns.filter(p=>p.title).map(p=>[p.title,String(p.category),String(p.difficulty),p.image||'https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=600&q=80',p.pdf||p.externalUrl||'']);
+      patterns.splice(0,patterns.length,...mapped);page=1;draw();
+    }
+    if(cmsCourses.length)$('#courseFeed').innerHTML=cmsCourses.map(c=>`<article class="course-card"><span class="tag">Sanity course</span><h3>${c.title||'Crochet course'}</h3><p>${c.summary||''}</p></article>`).join('');
+    if(cmsGuides.length){
+      $('#stitchTable').innerHTML=`<div class="stitch-row head"><span>Sample</span><span>Name & symbol</span><span>US code</span><span>UK code</span><span>How to make</span><span></span></div>`+cmsGuides.map((g,i)=>`<div class="stitch-row"><i class="swatch" style="filter:hue-rotate(${i*35}deg)"></i><b>${g.title||'Stitch guide'}</b><span>${g.us}</span><span>${g.uk}</span><div class="steps"><i></i><i></i><i></i></div><button class="read" data-stitch="${g.title||'Stitch guide'}">Read instructions</button></div>`).join('');
+    }
+  }catch(error){console.info('Sanity content was unavailable; showing local fallback content.',error.message)}
+});

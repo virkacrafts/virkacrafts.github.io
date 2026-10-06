@@ -3,3 +3,4 @@
 
 /* The source artwork is used unaltered for the header mark. */
 .top>.logo{width:132px;height:42px;display:block;background:url('assets/reference-home.png') -67px -30px/1040px auto no-repeat;font-size:0;flex:0 0 auto}.top>.logo span,.top>.logo small{display:none}
+.course-feed{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:22px}.course-card{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px;box-shadow:var(--shadow)}.course-card h3{margin:6px 0;font-size:17px}.course-card p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
