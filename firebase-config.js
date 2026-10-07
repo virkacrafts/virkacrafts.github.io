@@ -5,6 +5,6 @@ export const firebaseConfig = {
   authDomain: 'virkacrafts-app.firebaseapp.com',
   projectId: 'virkacrafts-app',
   storageBucket: 'virkacrafts-app.firebasestorage.app',
-  messagingSenderId: '',
+  messagingSenderId: '1073138046998',
   appId: '1:1073138046998:web:fbbd48f7aef02f85953d37',
 }
