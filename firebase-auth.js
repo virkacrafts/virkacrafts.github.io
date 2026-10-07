@@ -18,7 +18,7 @@ if (!isFirebaseConfigured) {
 }
 
 const app = isFirebaseConfigured ? (getApps().length ? getApp() : initializeApp(firebaseConfig)) : null
-const auth = app ? getAuth(app) : null
+export const auth = app ? getAuth(app) : null
 
 export async function signUpWithEmail(name, email, password) {
   const result = await createUserWithEmailAndPassword(auth, email.trim(), password)
