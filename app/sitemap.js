@@ -1,0 +1,4 @@
+import {sanityClient} from '../lib/sanity'
+import {categoriesQuery,patternsQuery,tagsQuery} from '../lib/queries'
+import {siteUrl} from '../lib/site'
+export default async function sitemap(){const [patterns,categories,tags]=await Promise.all([sanityClient.fetch(patternsQuery).catch(()=>[]),sanityClient.fetch(categoriesQuery).catch(()=>[]),sanityClient.fetch(tagsQuery).catch(()=>[])]);const staticPages=['','/patterns','/categories','/about','/contact','/privacy','/terms'].map(path=>({url:`${siteUrl}${path}`,changeFrequency:'weekly',priority:path===''?1:0.7}));return [...staticPages,...patterns.filter(p=>p.slug).map(p=>({url:`${siteUrl}/patterns/${p.slug}`,lastModified:p.publishedAt,changeFrequency:'monthly',priority:0.8})),...categories.map(c=>({url:`${siteUrl}/categories/${c.slug}`,lastModified:c.updatedAt,changeFrequency:'weekly',priority:0.6})),...tags.map(t=>({url:`${siteUrl}/tags/${t.slug}`,lastModified:t.updatedAt,changeFrequency:'weekly',priority:0.5}))]}

@@ -1,0 +1,2 @@
+export const metadata={title:'Terms of Service',description:'VirkaCrafts terms of service.',alternates:{canonical:'/terms'}}
+export default function Terms(){return <article className="container prose"><h1>Terms of service</h1><p>Use VirkaCrafts content responsibly and respect the copyrights and licences attached to each pattern.</p><h2>Content</h2><p>Patterns and learning materials may have separate download or use conditions.</p></article>}

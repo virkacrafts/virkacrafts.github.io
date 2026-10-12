@@ -1,0 +1,2 @@
+export const metadata={title:'About Us',description:'Learn about VirkaCrafts and our crochet community.',alternates:{canonical:'/about'}}
+export default function About(){return <article className="container prose"><h1>About VirkaCrafts</h1><p>VirkaCrafts helps crochet makers find clear patterns, friendly learning materials, and useful tools.</p><h2>Our mission</h2><p>We make creative learning accessible for beginners and experienced makers alike.</p></article>}
