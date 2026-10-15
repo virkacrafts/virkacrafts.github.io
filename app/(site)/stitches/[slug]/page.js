@@ -1,8 +1,8 @@
 import Image from 'next/image'
 import {notFound} from 'next/navigation'
-import RichText from '../../../components/RichText'
-import {sanityClient} from '../../../lib/sanity'
-import {guideBySlugQuery, guidesQuery} from '../../../lib/queries'
+import RichText from '../../../../components/RichText'
+import {sanityClient} from '../../../../lib/sanity'
+import {guideBySlugQuery, guidesQuery} from '../../../../lib/queries'
 
 export const revalidate = 300
 export async function generateStaticParams(){const guides=await sanityClient.fetch(guidesQuery).catch(()=>[]);return guides.map(guide=>({slug:guide.slug}))}

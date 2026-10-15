@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import {sanityClient} from '../../lib/sanity'
-import {coursesQuery} from '../../lib/queries'
+import {sanityClient} from '../../../lib/sanity'
+import {coursesQuery} from '../../../lib/queries'
 
 export const metadata={title:'Crochet Learning Guides',description:'Structured crochet learning guides for every skill level.',alternates:{canonical:'/guides'}}
 export const revalidate=300

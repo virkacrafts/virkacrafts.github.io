@@ -1,10 +1,10 @@
 import Image from 'next/image'
 import {notFound} from 'next/navigation'
-import Comments from '../../../components/Comments'
-import JsonLd from '../../../components/JsonLd'
-import {sanityClient} from '../../../lib/sanity'
-import {patternBySlugQuery,patternsQuery} from '../../../lib/queries'
-import {siteUrl} from '../../../lib/site'
+import Comments from '../../../../components/Comments'
+import JsonLd from '../../../../components/JsonLd'
+import {sanityClient} from '../../../../lib/sanity'
+import {patternBySlugQuery,patternsQuery} from '../../../../lib/queries'
+import {siteUrl} from '../../../../lib/site'
 export const revalidate=300
 export async function generateStaticParams(){const patterns=await sanityClient.fetch(patternsQuery).catch(()=>[]);return patterns.filter(p=>p.slug).map(p=>({slug:p.slug}))}
 export async function generateMetadata({params}){const {slug}=await params,pattern=await sanityClient.fetch(patternBySlugQuery,{slug}).catch(()=>null);if(!pattern)return {};const url=`${siteUrl}/patterns/${pattern.slug}`;return {title:pattern.title,description:pattern.description,alternates:{canonical:url},openGraph:{title:pattern.title,description:pattern.description,url,type:'article',images:pattern.image?[{url:pattern.image,alt:pattern.title}]:[]},twitter:{card:'summary_large_image',title:pattern.title,description:pattern.description,images:pattern.image?[pattern.image]:[]}}}

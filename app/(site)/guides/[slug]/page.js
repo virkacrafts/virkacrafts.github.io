@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
-import RichText from '../../../components/RichText'
-import {sanityClient} from '../../../lib/sanity'
-import {courseBySlugQuery, coursesQuery} from '../../../lib/queries'
+import RichText from '../../../../components/RichText'
+import {sanityClient} from '../../../../lib/sanity'
+import {courseBySlugQuery, coursesQuery} from '../../../../lib/queries'
 
 export const revalidate=300
 export async function generateStaticParams(){const courses=await sanityClient.fetch(coursesQuery).catch(()=>[]);return courses.map(course=>({slug:course.slug}))}

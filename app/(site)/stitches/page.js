@@ -1,6 +1,6 @@
-import GuideCard from '../../components/GuideCard'
-import {sanityClient} from '../../lib/sanity'
-import {guidesQuery} from '../../lib/queries'
+import GuideCard from '../../../components/GuideCard'
+import {sanityClient} from '../../../lib/sanity'
+import {guidesQuery} from '../../../lib/queries'
 
 export const metadata = {title: 'Basic Crochet Stitches', description: 'Learn essential crochet stitches with clear, step-by-step guides.', alternates: {canonical: '/stitches'}}
 export const revalidate = 300
