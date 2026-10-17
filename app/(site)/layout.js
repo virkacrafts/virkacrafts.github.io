@@ -1,8 +1,13 @@
 import JsonLd from '../../components/JsonLd'
 import SiteChrome from '../../components/SiteChrome'
+import {sanityNoCdnClient} from '../../lib/sanity'
+import {siteSettingsQuery} from '../../lib/queries'
 import {siteName, siteUrl} from '../../lib/site'
 
-export default function SiteLayout({children}) {
+export const revalidate = 300
+
+export default async function SiteLayout({children}) {
+  const settings = await sanityNoCdnClient.fetch(siteSettingsQuery).catch(() => null)
   const data = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -11,5 +16,5 @@ export default function SiteLayout({children}) {
     ],
   }
 
-  return <><JsonLd data={data}/><SiteChrome>{children}</SiteChrome></>
+  return <><JsonLd data={data}/><SiteChrome settings={settings}>{children}</SiteChrome></>
 }
