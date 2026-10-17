@@ -38,10 +38,9 @@ export default async function StitchPage({params}) {
     <p className="eyebrow">{guide.level} stitch</p>
     <h1>{guide.title}</h1>
     <GuideFigure src={guide.image} alt={guide.imageAlt || guide.title} priority/>
-    <p><strong>US:</strong> {guide.usAbbreviation || '—'} &nbsp; <strong>UK:</strong> {guide.ukAbbreviation || '—'} &nbsp; <strong>Symbol:</strong> {guide.stitchSymbol || '—'}</p>
+    <p className="stitch-abbreviations"><span><strong>US:</strong> {guide.usAbbreviation || '—'}</span><span><strong>UK:</strong> {guide.ukAbbreviation || '—'}</span><span className="stitch-symbol"><strong>Symbol:</strong>{guide.symbolImage && <Image className="stitch-symbol-icon" src={guide.symbolImage} alt={guide.symbolImageAlt || `${guide.title} symbol`} width={24} height={24} />}{guide.stitchSymbol && <span>{guide.stitchSymbol}</span>}{!guide.stitchSymbol && !guide.symbolImage && <span>—</span>}</span></p>
 
     {guide.drawingImage && <section className="guide-artwork"><h2>Stitch drawing</h2><GuideFigure src={guide.drawingImage} alt={guide.drawingImageAlt || `${guide.title} stitch drawing`}/></section>}
-    {guide.symbolImage && <section className="guide-artwork"><h2>Stitch symbol</h2><GuideFigure src={guide.symbolImage} alt={guide.symbolImageAlt || `${guide.title} symbol`}/></section>}
     {guide.referenceImages?.some(image => image?.url) && <section className="guide-artwork"><h2>Gallery and reference images</h2><div className="guide-gallery">{guide.referenceImages.filter(image => image?.url).map((image, index) => <figure key={image._key || image.url || index}><Image src={image.url} alt={image.alt || `${guide.title} reference ${index + 1}`} width={900} height={700}/>{image.caption && <figcaption>{image.caption}</figcaption>}</figure>)}</div></section>}
 
     <RichText value={guide.instructions}/>
